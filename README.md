@@ -8,6 +8,12 @@ English and localized entries remain independent catalog entries; applications
 choose the language they need instead of receiving a fabricated per-code wire
 model.
 
+Entries retain optional `meta.labelProvenance` from the verified snapshot.
+Local search matches expose only the selected code's corresponding
+`labelProvenance`, including its independently pinned label edition and exact
+designation. Membership `versionId`, entry IDs, values and search ranking stay
+unchanged. Sources without that optional metadata keep their prior result shape.
+
 ```ts
 const matches = index.search({
   claim: 'Condition.code',

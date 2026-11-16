@@ -3,6 +3,8 @@ import {
   type TerminologyEntry,
   type TerminologyEntryType,
   type TerminologySnapshot,
+  type TerminologyLabelProvenance,
+  type TerminologyLabelDesignation,
 } from 'terminology-data-utils-ts';
 
 export type TerminologyEntrySelection = Readonly<{
@@ -17,6 +19,9 @@ export type TerminologySearchInput = TerminologyEntrySelection & Readonly<{
   limit?: number;
 }>;
 
+export type TerminologyMatchLabelProvenance = Omit<TerminologyLabelProvenance, 'designations'>
+  & Readonly<{ designation: TerminologyLabelDesignation }>;
+
 export type TerminologyMatch = Readonly<{
   entryId: string;
   entryType: TerminologyEntryType;
@@ -26,6 +31,8 @@ export type TerminologyMatch = Readonly<{
   sources: readonly string[];
   code: string;
   value: string;
+  /** Evidence for this exact local value; membership versionId remains separate. */
+  labelProvenance?: TerminologyMatchLabelProvenance;
 }>;
 
 type IndexedValue = Readonly<{
@@ -88,16 +95,25 @@ export class TerminologyLocalIndex {
     matches.sort((left, right) => left.rank - right.rank
       || left.indexed.value.localeCompare(right.indexed.value)
       || left.indexed.code.localeCompare(right.indexed.code));
-    return Object.freeze(matches.slice(0, limit).map(({ indexed }) => Object.freeze({
-      entryId: indexed.entry.id,
-      entryType: indexed.entry.type,
-      language: indexed.entry.language,
-      system: indexed.entry.meta.system,
-      versionId: indexed.entry.meta.versionId,
-      sources: indexed.entry.meta.sources,
-      code: indexed.code,
-      value: indexed.value,
-    })));
+    return Object.freeze(matches.slice(0, limit).map(({ indexed }) => {
+      const provenance = indexed.entry.meta.labelProvenance;
+      return Object.freeze({
+        entryId: indexed.entry.id,
+        entryType: indexed.entry.type,
+        language: indexed.entry.language,
+        system: indexed.entry.meta.system,
+        versionId: indexed.entry.meta.versionId,
+        sources: indexed.entry.meta.sources,
+        code: indexed.code,
+        value: indexed.value,
+        ...(provenance ? { labelProvenance: Object.freeze({
+          sourceId: provenance.sourceId,
+          sourceVersion: provenance.sourceVersion,
+          policy: provenance.policy,
+          designation: provenance.designations[indexed.code]!,
+        }) } : {}),
+      });
+    }));
   }
 }
 

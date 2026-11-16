@@ -39,7 +39,7 @@
     "prepack": "npm run check"
   },
   "dependencies": {
-    "terminology-data-utils-ts": "0.2.0"
+    "terminology-data-utils-ts": "0.2.2"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

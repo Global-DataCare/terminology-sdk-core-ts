@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Consume Terminology Data 0.2.2 and retain optional per-label designation
+  provenance in grouped entries and local matches, independently from membership
+  versions. Preserve existing values, ranking and metadata-free snapshots.
+
 ## 0.2.0
 
 - Select grouped terminology entries by canonical flat claim and language.
