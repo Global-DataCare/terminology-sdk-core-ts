@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.1
 
 - Consume Terminology Data 0.2.2 and retain optional per-label designation
   provenance in grouped entries and local matches, independently from membership

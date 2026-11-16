@@ -1,6 +1,6 @@
 {
   "name": "terminology-sdk-core-ts",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Runtime-neutral local search over versioned terminology snapshots",
   "author": "Connecting Solution & Applications Ltd. (ConnectHealth.info)",
   "license": "Apache-2.0",
